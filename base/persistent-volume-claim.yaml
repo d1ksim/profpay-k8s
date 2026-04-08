@@ -4,7 +4,7 @@ metadata:
   name: redis-pvc
   namespace: profpay
 spec:
-  storageClassName: standard
+  storageClassName: nfs-rwx
   accessModes:
     - ReadWriteOnce
   resources:
@@ -17,7 +17,7 @@ metadata:
   name: redisinsight-pvc
   namespace: profpay
 spec:
-  storageClassName: standard
+  storageClassName: nfs-rwx
   accessModes:
     - ReadWriteOnce
   resources:
