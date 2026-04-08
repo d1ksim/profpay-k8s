@@ -9,7 +9,12 @@ patches:
       kind: Deployment
       name: prof-pay-server
       namespace: app
-    patch: |-
+    patch: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: prof-pay-server
+        namespace: app
       spec:
         template:
           spec:
