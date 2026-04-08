@@ -57,6 +57,24 @@ spec:
                 secretKeyRef:
                     name: profpay-db-secret
                     key: DB_PASSWORD
+            
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: profpay-redis-config
+                  key: REDIS_HOST
+
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: profpay-redis-config
+                  key: REDIS_PORT
+
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: profpay-redis-secret
+                  key: REDIS_PASSWORD
       imagePullSecrets:
         - name: dockerhub-secret
 ---
