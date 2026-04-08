@@ -6,6 +6,7 @@ resources:
   - persistent-volume-claim.yaml
   - persistent-volume.yaml
   - tls-option.yaml
+  - storage.yaml
 images:
   - name: IMAGE_PLACEHOLDER
     newName: placeholder
