@@ -10,5 +10,5 @@ commonLabels:
 
 images:
   - name: PROF_PAY_SERVER_IMAGE_PLACEHOLDER
-    newName: d1mpi/prof-pay-server:1.2.26
+    newName: d1mpi/prof-pay-server
     newTag: 1.2.26
