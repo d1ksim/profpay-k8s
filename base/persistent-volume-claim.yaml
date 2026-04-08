@@ -4,12 +4,12 @@ metadata:
   name: redis-pvc
   namespace: profpay
 spec:
-  capacity:
-    storage: 5Gi
+  storageClassName: standard
   accessModes:
     - ReadWriteOnce
-  hostPath:
-    path: /mnt/data/redis
+  resources:
+    requests:
+      storage: 5Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
