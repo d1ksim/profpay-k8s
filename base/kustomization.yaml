@@ -1,6 +1,11 @@
 resources:
   - deployment.yaml
   - service.yaml
+  - config-map.yaml
+  - ingress.yaml
+  - persistent-volume-claim.yaml
+  - persistent-volume.yaml
+  - tls-option.yaml
 images:
   - name: IMAGE_PLACEHOLDER
     newName: placeholder
