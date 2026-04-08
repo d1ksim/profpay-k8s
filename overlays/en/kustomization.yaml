@@ -9,6 +9,6 @@ commonLabels:
   app: app
 
 images:
-  - name: IMAGE_PLACEHOLDER
+  - name: PROF_PAY_SERVER_IMAGE_PLACEHOLDER
     newName: cr.selcloud.ru/profpay/prof-pay-server
     newTag: 1.2.26
