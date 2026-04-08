@@ -57,14 +57,6 @@ spec:
                 secretKeyRef:
                     name: profpay-db-secret
                     key: DB_PASSWORD
-          volumeMounts:
-            - name: aml-storage
-              mountPath: /app/aml-data
-              readOnly: false
-      volumes:
-        - name: aml-storage
-          persistentVolumeClaim:
-            claimName: aml-pvc
       imagePullSecrets:
         - name: dockerhub-secret
 ---
