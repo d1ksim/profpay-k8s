@@ -75,8 +75,6 @@ spec:
                 secretKeyRef:
                   name: profpay-redis-secret
                   key: REDIS_PASSWORD
-      imagePullSecrets:
-        - name: dockerhub-secret
 ---
 apiVersion: apps/v1
 kind: Deployment

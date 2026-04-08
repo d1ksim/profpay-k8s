@@ -4,6 +4,17 @@ kind: Kustomization
 resources:
   - ../../base
 
+patches:
+  - target:
+      kind: Deployment
+      name: prof-pay-server
+    patch: |-
+      spec:
+        template:
+          spec:
+            imagePullSecrets:
+              - name: dockerhub-secret
+
 namespace: app
 commonLabels:
   app: app
