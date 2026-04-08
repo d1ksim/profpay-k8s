@@ -1,0 +1,69 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wallet-rest-ingress
+  namespace: profpay
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/service.serversscheme: http
+spec:
+  tls:
+    - hosts:
+        - api.profpay-services.com
+      secretName: wallet-api-tls
+  rules:
+    - host: api.profpay-services.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prof-pay-server
+                port:
+                  number: 8284
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: indexer-rest-ingress
+  namespace: profpay
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/service.serversscheme: http
+spec:
+  tls:
+    - hosts:
+        - indexer.profpay-services.com
+      secretName: wallet-indexer-api-tls
+  rules:
+    - host: indexer.profpay-services.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: blockchain-indexer
+                port:
+                  number: 8085
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: wallet-grpc
+  namespace: profpay
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`grpc.profpay-services.com`)
+      kind: Rule
+      services:
+        - name: prof-pay-server
+          port: 8443
+          scheme: h2c
+  tls:
+    secretName: GRPC_TLS_PLACEHOLDER

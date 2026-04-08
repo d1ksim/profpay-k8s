@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-config
+  namespace: NAMESPACE_PLACEHOLDER
+data:
+  redis.conf: |
+    # сюда содержимое твоего redis.conf

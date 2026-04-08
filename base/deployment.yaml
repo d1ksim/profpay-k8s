@@ -1,0 +1,236 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prof-pay-server
+  namespace: profpay
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: prof-pay-server
+  template:
+    metadata:
+      labels:
+        app: prof-pay-server
+    spec:
+      containers:
+        - name: prof-pay-server
+          image: PROF_PAY_SERVER_IMAGE_PLACEHOLDER
+          ports:
+            - containerPort: 8284   # HTTP
+            - containerPort: 50051  # gRPC
+            - containerPort: 8443   # HTTPS
+          env:
+            - name: JAVA_OPTS
+              value: "-Xmx8192m -Xms256m"
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                    name: profpay-db-config
+                    key: DB_HOST
+
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                    name: profpay-db-config
+                    key: DB_PORT
+
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                    name: profpay-db-config
+                    key: DB_NAME
+
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                    name: profpay-db-secret
+                    key: DB_USERNAME
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                    name: profpay-db-secret
+                    key: DB_PASSWORD
+          volumeMounts:
+            - name: aml-storage
+              mountPath: /app/aml-data
+              readOnly: false
+          resources:
+            requests:
+              memory: "8Gi"
+              cpu: "4"
+            limits:
+              memory: "14Gi"
+              cpu: "8"
+      volumes:
+        - name: aml-storage
+          persistentVolumeClaim:
+            claimName: aml-pvc
+      imagePullSecrets:
+        - name: dockerhub-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blockchain-indexer
+  namespace: profpay
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: blockchain-indexer
+  template:
+    metadata:
+      labels:
+        app: blockchain-indexer
+    spec:
+      containers:
+        - name: blockchain-indexer
+          image: BLOCKCHAIN_IMAGE_PLACEHOLDER
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8085
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                    name: profpay-indexer-db-config
+                    key: DB_HOST
+
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                    name: profpay-indexer-db-config
+                    key: DB_PORT
+
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                    name: profpay-indexer-db-config
+                    key: DB_NAME
+
+            - name: KAFKA_HOST
+              valueFrom:
+                configMapKeyRef:
+                    name: profpay-indexer-kafka-config
+                    key: KAFKA_HOST
+
+            - name: KAFKA_PORT
+              valueFrom:
+                configMapKeyRef:
+                    name: profpay-indexer-kafka-config
+                    key: KAFKA_PORT
+
+            - name: KAFKA_APP_ID
+              valueFrom:
+                configMapKeyRef:
+                    name: profpay-indexer-kafka-config
+                    key: KAFKA_APP_ID
+
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                    name: profpay-indexer-db-secret
+                    key: DB_USERNAME
+
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                    name: profpay-indexer-db-secret
+                    key: DB_PASSWORD
+            
+          resources:
+            requests:
+              memory: "8Gi"
+              cpu: "4"
+            limits:
+              memory: "14Gi"
+              cpu: "8"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: profpay
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7.4.3-alpine
+          ports:
+            - containerPort: 6379
+          resources:
+            requests:
+              memory: "8Gi"
+              cpu: "4"
+            limits:
+              memory: "14Gi"
+              cpu: "8"
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+            - name: redis-config
+              mountPath: /usr/local/etc/redis/redis.conf
+              subPath: redis.conf
+          command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+      volumes:
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: redis-pvc
+        - name: redis-config
+          configMap:
+            name: redis-config
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redisinsight
+  namespace: profpay
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redisinsight
+  template:
+    metadata:
+      labels:
+        app: redisinsight
+    spec:
+      containers:
+        - name: redisinsight
+          image: redis/redisinsight:latest
+          ports:
+            - containerPort: 5540
+          resources:
+            requests:
+              memory: "8Gi"
+              cpu: "4"
+            limits:
+              memory: "14Gi"
+              cpu: "8"
+          volumeMounts:
+            - name: redisinsight-data
+              mountPath: /data
+      volumes:
+        - name: redisinsight-data
+          persistentVolumeClaim:
+            claimName: redisinsight-pvc
