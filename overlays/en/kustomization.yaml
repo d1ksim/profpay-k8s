@@ -11,7 +11,7 @@ commonLabels:
 images:
   - name: PROF_PAY_SERVER_IMAGE_PLACEHOLDER
     newName: d1mpi/prof-pay-server
-    newTag: 1.2.26
+    newTag: 1.2.27
   - name: BLOCKCHAIN_IMAGE_PLACEHOLDER
     newName: d1mpi/blockchain-indexer
     newTag: 1.0.10
