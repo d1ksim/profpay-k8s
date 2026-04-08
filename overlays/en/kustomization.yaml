@@ -4,16 +4,8 @@ kind: Kustomization
 resources:
   - ../../base
 
-patches:
-  - target:
-      kind: Deployment
-      name: prof-pay-server
-    patch: |-
-      spec:
-        template:
-          spec:
-            imagePullSecrets:
-              - name: dockerhub-secret
+patchesStrategicMerge:
+  - patch-imagepullsecret.yaml
 
 namespace: app
 commonLabels:
