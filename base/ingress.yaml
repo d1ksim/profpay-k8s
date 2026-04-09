@@ -7,7 +7,6 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/service.serversscheme: http
-  ingressClassName: traefik
 spec:
   tls:
     - hosts:
@@ -34,7 +33,6 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/service.serversscheme: http
-  ingressClassName: traefik
 spec:
   tls:
     - hosts:
