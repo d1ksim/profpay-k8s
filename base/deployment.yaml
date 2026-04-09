@@ -4,7 +4,7 @@ metadata:
   name: prof-pay-server
   namespace: profpay
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -82,7 +82,7 @@ metadata:
   name: blockchain-indexer
   namespace: profpay
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
