@@ -66,4 +66,4 @@ spec:
           port: 8443
           scheme: h2c
   tls:
-    secretName: GRPC_TLS_PLACEHOLDER
+    secretName: wallet-grpc-tls
