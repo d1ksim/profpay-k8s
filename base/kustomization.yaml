@@ -1,7 +1,8 @@
 resources:
+  - cluster-issuer.yaml
+  - config-map.yaml
   - deployment.yaml
   - service.yaml
-  - config-map.yaml
   - ingress.yaml
   - persistent-volume-claim.yaml
   - persistent-volume.yaml

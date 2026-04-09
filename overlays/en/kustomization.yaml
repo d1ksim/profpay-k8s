@@ -8,22 +8,22 @@ patches:
   - target:
       kind: Deployment
       name: prof-pay-server
-      namespace: app
+      namespace: profpay
     patch: |
       apiVersion: apps/v1
       kind: Deployment
       metadata:
         name: prof-pay-server
-        namespace: app
+        namespace: profpay
       spec:
         template:
           spec:
             imagePullSecrets:
               - name: dockerhub-secret
 
-namespace: app
+namespace: profpay
 commonLabels:
-  app: app
+  app: profpay
 
 images:
   - name: PROF_PAY_SERVER_IMAGE_PLACEHOLDER
